@@ -1,49 +1,67 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<title>Hospital Token System</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Token System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f7f9; /* clean background */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+
+    button {
+      font-size: 1.5rem;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #hospital-name {
+      font-size: 1.2rem;
+      color: #555;
+      position: fixed;
+      bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.5rem; }
+      button { font-size: 1.2rem; padding: 12px 25px; }
+      #hospital-name { font-size: 1rem; }
+    }
+  </style>
 </head>
-
 <body>
+  <h1>Hospital Token System</h1>
+  <button onclick="getToken()">Get Token</button>
+  <div id="token"></div>
 
-<h1>Hospital Token System</h1>
+  <div id="hospital-name">Devkate Hospital</div>
 
-<form onsubmit="generateToken(); return false;">
-
-<label>Patient Name:</label><br>
-<input type="text" required><br><br>
-
-<label>Mobile Number:</label><br>
-<input type="text" required><br><br>
-
-<label>Age:</label><br>
-<input type="number" required><br><br>
-
-<button type="submit">Get Token</button>
-
-</form>
-
-<h2 id="token"></h2>
-
-<script>
-
-let token = localStorage.getItem("tokenCount") || 1;
-
-function generateToken(){
-
-document.getElementById("token").innerHTML = "Your Token Number is: " + token;
-
-localStorage.setItem("lastToken", token);
-
-token++;
-
-localStorage.setItem("tokenCount", token);
-
-}
-
-</script>
-
+  <script>
+    let counter = 1;
+    function getToken() {
+      document.getElementById('token').innerHTML = <h2>Token No: ${counter}</h2>;
+      counter++;
+    }
+  </script>
 </body>
-
 </html>
+
