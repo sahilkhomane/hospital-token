@@ -8,57 +8,49 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f2f7f9; /* clean background */
+      background: #f2f7f9;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
     }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #333;
-    }
-
-    button {
-      font-size: 1.5rem;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 10px;
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-
-    #hospital-name {
-      font-size: 1.2rem;
-      color: #555;
-      position: fixed;
-      bottom: 20px;
-    }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 1.5rem; }
-      button { font-size: 1.2rem; padding: 12px 25px; }
-      #hospital-name { font-size: 1rem; }
-    }
+    h1 { font-size: 2rem; margin-bottom: 20px; text-align: center; color: #333; }
+    input, button { font-size: 1rem; padding: 10px; margin: 5px; border-radius: 5px; }
+    button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    #hospital-name { font-size: 1.2rem; color: #555; position: fixed; bottom: 20px; }
   </style>
 </head>
 <body>
   <h1>Hospital Token System</h1>
-  <button onclick="getToken()">Get Token</button>
-  <div id="token"></div>
 
+  <form id="patientForm">
+    <input type="text" id="name" placeholder="Patient Name" required><br>
+    <input type="text" id="mobile" placeholder="Mobile No" required><br>
+    <input type="number" id="age" placeholder="Age" required><br>
+    <button type="button" onclick="getToken()">Get Token</button>
+  </form>
+
+  <div id="token"></div>
   <div id="hospital-name">Devkate Hospital</div>
 
   <script>
     let counter = 1;
     function getToken() {
-      document.getElementById('token').innerHTML = <h2>Token No: ${counter}</h2>;
+      let name = document.getElementById('name').value;
+      let mobile = document.getElementById('mobile').value;
+      let age = document.getElementById('age').value;
+
+      if(!name || !mobile || !age){
+        alert("Please fill all fields");
+        return;
+      }
+
+      let tokenInfo = `Token No: ${counter} <br>
+                       Name: ${name} <br>
+                       Mobile: ${mobile} <br>
+                       Age: ${age}`;
+      document.getElementById('token').innerHTML = tokenInfo;
       counter++;
     }
   </script>
