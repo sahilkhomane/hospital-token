@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Hospital Token Display</title>
+
+<style>
+
+body{
+font-family: Arial;
+text-align:center;
+background:#f2f2f2;
+}
+
+h1{
+font-size:50px;
+}
+
+.token{
+font-size:90px;
+color:red;
+}
+
+button{
+padding:15px;
+font-size:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Now Serving</h1>
+
+<div class="token" id="currentToken">1</div>
+
+<br><br>
+
+<button onclick="nextToken()">Next Patient</button>
+
+<script>
+
+let current = localStorage.getItem("currentToken") || 1;
+
+document.getElementById("currentToken").innerText = current;
+
+function nextToken(){
+
+current++;
+
+localStorage.setItem("currentToken", current);
+
+document.getElementById("currentToken").innerText = current;
+
+}
+
+</script>
+
+</body>
+
+</html>
