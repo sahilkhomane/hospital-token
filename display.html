@@ -1,63 +1,92 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<title>Hospital Token Display</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Display</title>
 <style>
-
-body{
-font-family: Arial;
-text-align:center;
-background:#f2f2f2;
+body {
+  font-family: Arial, sans-serif;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  margin:0;
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5); /* gradient background */
+  color: #333;
+  text-align:center;
 }
 
-h1{
-font-size:50px;
+#hospital-name {
+  font-size: 3rem;
+  font-weight:bold;
+  margin-bottom:20px;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
 }
 
-.token{
-font-size:90px;
-color:red;
+#success-msg {
+  font-size:2rem;
+  font-weight:bold;
+  margin-bottom:30px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.6);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  color: green;
 }
 
-button{
-padding:15px;
-font-size:20px;
+#token-card {
+  background-color: rgba(255,255,255,0.8);
+  padding: 25px 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+  font-size:1.8rem;
+  font-weight:bold;
+  line-height:2.5rem;
 }
 
+#footer {
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  font-size:0.9rem;
+  color:#fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
 </style>
-
 </head>
-
 <body>
 
-<h1>Now Serving</h1>
-
-<div class="token" id="currentToken">1</div>
-
-<br><br>
-
-<button onclick="nextToken()">Next Patient</button>
+<div id="hospital-name">Devkate Hospital</div>
+<div id="success-msg"></div>
+<div id="token-card" id="token-info"></div>
+<div id="footer">Created by Sahil Khomane</div>
 
 <script>
+// Fetch form data
+const formData = JSON.parse(localStorage.getItem('formData') || '{}');
+const tokenNumber = formData.tokenNumber || "N/A";
+const name = formData.name || "N/A";
+const mobile = formData.mobile || "N/A";
+const age = formData.age || "N/A";
+const alreadyReceived = formData.alreadyReceived;
 
-let current = localStorage.getItem("currentToken") || 1;
+// Set success message
+document.getElementById('success-msg').innerText = alreadyReceived ? "You have already received the token" : "Success! Your token is generated";
+document.getElementById('success-msg').style.color = alreadyReceived ? "red" : "green";
 
-document.getElementById("currentToken").innerText = current;
+// Display info vertically
+document.getElementById('token-card').innerHTML =
+  `TOKEN NO: ${tokenNumber}<br>
+   NAME: ${name}<br>
+   MOBILE: ${mobile}<br>
+   AGE: ${age}`;
 
-function nextToken(){
-
-current++;
-
-localStorage.setItem("currentToken", current);
-
-document.getElementById("currentToken").innerText = current;
-
-}
-
+// Clear formData after display
+localStorage.removeItem('formData');
 </script>
 
 </body>
-
 </html>
