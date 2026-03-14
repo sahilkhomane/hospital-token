@@ -1,66 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hospital Token System</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f7f9;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    h1 { font-size: 2rem; margin-bottom: 20px; text-align: center; color: #333; }
-    input, button { font-size: 1rem; padding: 10px; margin: 5px; border-radius: 5px; }
-    button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
-    #hospital-name { font-size: 1.2rem; color: #555; position: fixed; bottom: 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Form</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  margin:0;
+  color:#333;
+}
+
+h1 {
+  margin-bottom:20px;
+  color:#fff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+input, button {
+  padding:10px;
+  font-size:1rem;
+  margin:5px;
+  border-radius:5px;
+  border:none;
+}
+
+button {
+  cursor:pointer;
+  background:#4CAF50;
+  color:white;
+  font-weight:bold;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+</style>
 </head>
 <body>
-  <h1>Hospital Token System</h1>
 
-  <form id="patientForm">
-    <input type="text" id="name" placeholder="Patient Name" required><br>
-    <input type="text" id="mobile" placeholder="Mobile No" required><br>
-    <input type="number" id="age" placeholder="Age" required><br>
-    <button type="button" onclick="getToken()">Get Token</button>
-  </form>
+<h1>Devkate Hospital - Token Form</h1>
 
-  <div id="token"></div>
- <!-- Hospital Name BELOW Get Token, minimal space -->
-<div id="hospital-name" style="text-align:center; font-size:2rem; font-weight:bold; color:#333; margin-top:5px;">
-  Devkate Hospital
-</div
+<input type="text" id="name" placeholder="Enter Name" required>
+<input type="text" id="mobile" placeholder="Enter Mobile" required>
+<input type="number" id="age" placeholder="Enter Age" required>
+<button onclick="submitForm()">Get Token</button>
 
-  <script>
-    let counter = 1;
-    function getToken() {
-      let name = document.getElementById('name').value;
-      let mobile = document.getElementById('mobile').value;
-      let age = document.getElementById('age').value;
+<script>
+function submitForm() {
+    const name = document.getElementById('name').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+    const age = document.getElementById('age').value.trim();
 
-      if(!name || !mobile || !age){
-        alert("Please fill all fields");
+    if(!name || !mobile || !age){
+        alert("Please fill all fields!");
         return;
-      }
-
-      let tokenInfo = `Token No: ${counter} <br>
-                       Name: ${name} <br>
-                       Mobile: ${mobile} <br>
-                       Age: ${age}`;
-      document.getElementById('token').innerHTML = tokenInfo;
-      counter++;
     }
-  </script>
-  <div id="footer" style="position: fixed; bottom: 10px; right: 10px; font-size: 0.9rem; color: #555;">
-  Created by Sahil Khomane
-</div>
-</div>
+
+    // Daily reset check
+    const today = new Date().toISOString().slice(0,10);
+    const storedDate = localStorage.getItem('tokenDate');
+    if(storedDate !== today){
+        localStorage.removeItem('tokens');
+        localStorage.setItem('nextToken','1');
+        localStorage.setItem('tokenDate', today);
+    }
+
+    // Fetch existing tokens
+    let tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
+    let nextToken = parseInt(localStorage.getItem('nextToken') || '1');
+
+    const userKey = `${name}_${mobile}`;
+    let tokenNumber;
+    let alreadyReceived = false;
+
+    if(tokens[userKey]){
+        tokenNumber = tokens[userKey];
+        alreadyReceived = true;
+    } else {
+        tokenNumber = nextToken;
+        tokens[userKey] = tokenNumber;
+        localStorage.setItem('tokens', JSON.stringify(tokens));
+        localStorage.setItem('nextToken', nextToken + 1);
+    }
+
+    // Save current formData for display page
+    localStorage.setItem('formData', JSON.stringify({name, mobile, age, tokenNumber, alreadyReceived}));
+
+    // Redirect to creative display page
+    window.location.href = "display.html";
+}
+</script>
+
 </body>
 </html>
 
